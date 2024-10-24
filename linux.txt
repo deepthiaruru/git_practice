@@ -1,0 +1,103 @@
+ssh-copy-id devapp01:/home/john/
+scp /home/bob/codefile devapp01:/home/john/
+ssh devapp01
+
+bob@caleston-lp10:~$ scp caleston-code.tar.gz bob@devapp01:~/
+
+
+
+cronjob:-
+crontab -l
+crontab -e #set schedule
+The first column is 11 = 11th minute
+
+The second column is 23 = 11 PM
+
+The third column is * = every day in a month (1st to the last day of the month)
+
+The fourth column is 2 = only the month of February
+
+The fifth column is * = every day if the week (Monday to Sunday)
+
+11 23 * 2 * /usr/local/bin/system-troubleshooter.sh
+
+minute hour date month day  filepath
+
+/etc/systemd/system/ --> service file path
+
+if any modification done in service file then reload the daemon
+sudo systemctl daemon-reload
+
+___________________________________________________________________________________________________________________
+
+--------------------
+	Task:
+---------------------
+presentation.
+
+Create a new service called mercury.service with the following requirements.
+
+Service name: - mercury.service, WorkingDirectory: - /opt/caleston-code/mercuryProject/, Command to run: /usr/bin/python3 manage.py runserver 0.0.0.0:8000.
+
+Restart on failure and enable for multi-user.target.
+
+Run as user mercury.
+
+Set description: Project Mercury Web Application.
+
+
+Create the unit file under /etc/systemd/system. Once done, enable and start the mercury.service.
+
+-------------------
+	Solution
+-------------------
+
+The service file should look like this:
+
+[Unit]
+Description=Project Mercury Web Application
+
+[Service]
+ExecStart=/usr/bin/python3 manage.py runserver 0.0.0.0:8000
+Restart=on-failure
+WorkingDirectory=/opt/caleston-code/mercuryProject
+User=mercury
+
+[Install]
+WantedBy=multi-user.target
+
+
+Use the vi editor: -
+
+sudo vi /etc/systemd/system/mercury.service
+Insert the data.
+
+
+
+Start and enable the service and check the status as follows: -
+
+sudo systemctl enable --now mercury.service
+
+sudo systemctl status mercury.service
+
+___________________________________________________________________________________________________________________
+
+Now that we have the port used by the Jenkins SSH server, let us begin interacting with Jenkins over ssh with the user mike.
+
+As mike, try running the following commands:
+
+mike@jenkins-server:~$ ssh -i /home/mike/.ssh/jenkins_key -l mike -p 8022 jenkins-server help
+
+Keep a note of the options used with the SSH command:
+
+-i flag is used to point to mike's private SSH key. Remember, we have already added the public key in the Jenkins configuration.
+-l is the login user which in our example is mike
+-p is the port which we found out in the previous step to be 8022
+
+
+$JENKINS_HOME variable holds the value of Jenkins home directory, which is /var/lib/jenkins in most of the cases but nor necessarily. This is where Jenkins stores its data like jobs, plugins, configs etc
+
+
+
+config.xml is the main configuration file of the Jenkins server.
+Jenkins home directory is most important to backup, since it contains all jobs, configuration, build history, plugins etc.
