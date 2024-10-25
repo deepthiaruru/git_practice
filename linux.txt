@@ -101,3 +101,8 @@ $JENKINS_HOME variable holds the value of Jenkins home directory, which is /var/
 
 config.xml is the main configuration file of the Jenkins server.
 Jenkins home directory is most important to backup, since it contains all jobs, configuration, build history, plugins etc.
+
+
+
+
+>>>>Adding for executing git commands
